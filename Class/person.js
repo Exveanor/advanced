@@ -7,10 +7,10 @@ class Person {
     }
 
     toString() {
-        return `${this.firstName} ${this.lastName} (age: ${this.age}, email: ${this.email})}`
+        return `${this.firstName} ${this.lastName} (age: ${this.age}, email: ${this.email})`;
     }
 }
 
 let person = new Person("Anna", "Simson", 22, "anna@yahoo.com");
 console.log(person);
-console.log(person.toString());
+console.log(person.toString()); 
