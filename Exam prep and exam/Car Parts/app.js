@@ -30,16 +30,19 @@ function solve() {
                 let conditionValue = conditionSelect.value;
 
                 if (
-                        !carModelValue ||
-                        !carYearValue || 
-                        !partNameValue ||
-                        !partNumberValue ||
-                        !conditionValue ||
-                        Number(carYearValue) <= 1980 ||
-                        Number(carYearValue) >= 2023
-                ) {
+                        carModelInput.value.trim() === "" ||
+                        carYearInput.value.trim() === "" ||
+                        partNameInput.value.trim() === "" ||
+                        partNumberInput.value.trim() === "" ||
+                        conditionSelect.value.trim() === ""
+                      ) {
                         return;
-                }
+                      }
+                      
+                      const carYear = parseInt(carYearInput.value);
+                      if (isNaN(carYear) || carYear < 1980 || carYear > 2023) {
+                        return;
+                      }
 
                 nextBtn.disabled = true;
                 Array.from([carModelInput, carYearInput, partNameInput, partNumberInput, conditionSelect]).forEach(input => input.value = "");
