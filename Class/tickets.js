@@ -18,8 +18,6 @@ function tickets(data, criteria) {
                 : a[criteria].localeCompare(b[criteria]);
         })
         .forEach((t) => console.log(t));
-
-
 }
 
 
