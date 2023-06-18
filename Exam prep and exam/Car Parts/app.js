@@ -1,151 +1,144 @@
 window.addEventListener('load', solve);
 
 function solve() {
-        // capture inputs
-        const carModelInput = document.getElementById("car-model");
-        const carYearInput = document.getElementById("car-year");
-        const partNameInput = document.getElementById("part-name");
-        const partNumberInput = document.getElementById("part-number");
-        const conditionSelect = document.getElementById("condition");
-
-        // capture outher elements
-        const infoList = document.querySelector(".info-list");
-        const confirmList = document.querySelector(".confirm-list");
-        const completeImg = document.getElementById("complete-img");
-        const completeText = document.getElementById("complete-text");
-
-        const nextBtn = document.getElementById("next-btn");
-
-        // attach events
-        nextBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                completeImg.style.visibility = "hidden";
-                completeText.textContent = "";
-
-                let carModelValue = carModelInput.value;
-                let carYearValue = carYearInput.value;
-                let partNameValue = partNameInput.value;
-                let partNumberValue = partNumberInput.value;
-                let conditionValue = conditionSelect.value;
-
-                if (
-                        carModelInput.value.trim() === "" ||
-                        carYearInput.value.trim() === "" ||
-                        partNameInput.value.trim() === "" ||
-                        partNumberInput.value.trim() === "" ||
-                        conditionSelect.value.trim() === ""
-                      ) {
-                        return;
-                      }
-                      
-                      const carYear = parseInt(carYearInput.value);
-                      if (isNaN(carYear) || carYear < 1980 || carYear > 2023) {
-                        return;
-                      }
-
-                nextBtn.disabled = true;
-                Array.from([carModelInput, carYearInput, partNameInput, partNumberInput, conditionSelect]).forEach(input => input.value = "");
-
-
-                //create elements
-                const liPartContent = document.createElement("li");
-                liPartContent.classList.add("part-content");
-
-                const articleEl = document.createElement("article");
-                // create ps
-                const modelP = document.createElement("p");
-                modelP.textContent = carModelValue;
-
-                const yearP = document.createElement("p");
-                yearP.textContent = carYearValue;
-
-                const nameP = document.createElement("p");
-                nameP.textContent = partNameValue;
-
-                const numberP = document.createElement("p");
-                numberP.textContent = partNumberValue;
-
-                const conditionP = document.createElement("p");
-                conditionP.textContent = conditionValue;
-
-                const editBtn = document.createElement("button");
-                editBtn.classList.add("edit-btn");
-                editBtn.textContent = "Edit";
-
-                const continueBtn = document.createElement("button");
-                continueBtn.classList.add("continue-btn");
-                continueBtn.textContent = "Continue"
-
-
-                //attach
-                articleEl.appendChild(modelP);
-                articleEl.appendChild(yearP);
-                articleEl.appendChild(nameP);
-                articleEl.appendChild(numberP);
-                articleEl.appendChild(conditionP);
-                liPartContent.appendChild(articleEl);
-                infoList.appendChild(liPartContent);
+        // capture elements
+        const carModelElement = document.getElementById('car-model');
+        const carYearElement = document.getElementById('car-year');
+        const partNameElement = document.getElementById('part-name');
+        const partNumberElement = document.getElementById('part-number');
+        const conditionElement = document.getElementById('condition');
+        const nextBtn = document.getElementById('next-btn');
+        // add events
+        nextBtn.addEventListener('click', onNext);
+        // attach
+        function onNext(e) {
+            e.preventDefault();
+     
+            const carModelElementValue = carModelElement.value;
+            const carYearElementValue = carYearElement.value;
+            const partNameElementValue = partNameElement.value;
+            const partNumberElementValue = partNumberElement.value;
+            const conditionElementValue = conditionElement.value;
+     
+            if (carModelElementValue === ''
+                || carYearElementValue === ''
+                || partNameElementValue === ''
+                || partNumberElementValue === ''
+                || conditionElementValue === ''
+                || carYearElementValue < 1980
+                || carYearElementValue > 2023) {
+                return;
+            }
+     
+            const ulPreviewElement = document.querySelector('.info-list');
+            const elConfirmElement = document.querySelector('.confirm-list');
+     
+            const completeImgElement = document.getElementById('complete-img');
+            completeImgElement.style.visibility = 'hidden';
+     
+            const completeTextElement = document.getElementById('complete-text');
+            completeTextElement.textContent = '';
+            // create elements
+            const liPreviewElement = document.createElement('li');
+            liPreviewElement.setAttribute('class', 'part-content');
+     
+            const article = document.createElement('article');
+     
+            const p1Element = document.createElement('p');
+            p1Element.textContent = `Car Model: ${carModelElementValue}`;
+     
+            const p2Element = document.createElement('p');
+            p2Element.textContent = `Car Year: ${carYearElementValue}`;
+     
+            const p3Element = document.createElement('p');
+            p3Element.textContent = `Part Name: ${partNameElementValue}`;
+     
+            const p4Element = document.createElement('p');
+            p4Element.textContent = `Part Number: ${partNumberElementValue}`;
+     
+            const p5Element = document.createElement('p');
+            p5Element.textContent = `Condition: ${conditionElementValue}`;
+     
+            const editBtn = document.createElement('button');
+            editBtn.setAttribute('class', 'edit-btn');
+            editBtn.textContent = 'Edit';
+     
+            const continueBtn = document.createElement('button');
+            continueBtn.setAttribute('class', 'continue-btn');
+            continueBtn.textContent = 'Continue';
+            // attach all ps
+            article.appendChild(p1Element);
+            article.appendChild(p2Element);
+            article.appendChild(p3Element);
+            article.appendChild(p4Element);
+            article.appendChild(p5Element);
+            //attach other elements
+            liPreviewElement.appendChild(article);
+            liPreviewElement.appendChild(editBtn);
+            liPreviewElement.appendChild(continueBtn);
+     
+            ulPreviewElement.appendChild(liPreviewElement);
+     
+            carModelElement.value = '';
+            carYearElement.value = '';
+            partNameElement.value = '';
+            partNumberElement.value = '';
+            conditionElement.value = '';
+            nextBtn.disabled = true;
+     
+            editBtn.addEventListener('click', onEdit);
+     
+            function onEdit(e) {
+                carModelElement.value = carModelElementValue;
+                carYearElement.value = carYearElementValue;
+                partNameElement.value = partNameElementValue;
+                partNumberElement.value = partNumberElementValue;
+                conditionElement.value = conditionElementValue;
+     
+                liPreviewElement.remove();
+     
+                nextBtn.disabled = false;
+            };
+     
+            continueBtn.addEventListener('click', onContinue);
+     
+            function onContinue(e) {
+                liPreviewElement.children[1].remove();
+                liPreviewElement.children[1].remove();
+     
+                const confirmBtn = document.createElement('button');
+                confirmBtn.setAttribute('class', 'confirm-btn');
+                confirmBtn.textContent = 'Confirm';
+     
+                const cancelBtn = document.createElement('button');
+                cancelBtn.setAttribute('class', 'cancel-btn');
+                cancelBtn.textContent = 'Cancel';
+     
+                liPreviewElement.appendChild(confirmBtn);
+                liPreviewElement.appendChild(cancelBtn);
+     
+                elConfirmElement.appendChild(liPreviewElement);
                 
-                articleEl.appendChild(editBtn);
-                articleEl.appendChild(continueBtn);
-                
+                confirmBtn.addEventListener('click', onConfirm);
         
-
-                editBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-
-                        infoList.innerHTML = '';
-
-                        carModelInput.value = carModelValue;
-                        carYearInput.value = carYearValue;
-                        partNameInput.value = partNameValue;
-                        partNumberInput.value = partNumberValue;
-                        conditionSelect.value = conditionValue;
-                        nextBtn.disabled = false;
-                });
-
-                continueBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-
-                        infoList.innerHTML = '';
-
-                        confirmList.innerHTML = `
-            <li class="part-content">
-                <article>
-                    <p>Car Model: ${carModelValue}</p>
-                    <p>Part Name: ${partNameValue}</p>
-                    <p>Car Year: ${carYearValue}</p>
-                    <p>Condition: ${conditionValue}</p>
-                    <p>Part Number: ${partNumberValue}</p>
-                    <button class="cancel-btn">Cancel</button>
-                    <button class="confirm-btn">Confirm</button>
-                </article>
-            </li>
-            `;
-
-                        let confirmBtn = document.querySelector('.confirm-btn');
-                        let cancelBtn = document.querySelector('.cancel-btn');
-
-                        confirmBtn.addEventListener('click', (e) => {
-                                e.preventDefault();
-
-                                confirmList.innerHTML = '';
-                                nextBtn.disabled = false;
-                                completeImg.style.visibility = 'visible';
-                                completeText.textContent = 'Part is Ordered!';
-                        });
-
-                        cancelBtn.addEventListener('click', (e) => {
-                                e.preventDefault();
-
-                                confirmList.innerHTML = '';
-                                nextBtn.disabled = false;
-                        });
-                });
-        });
-
-}
+                function onConfirm(e) {
+                    liPreviewElement.remove();
+                    nextBtn.disabled = false;
+                    completeImgElement.style.visibility = 'visible';
+                    completeTextElement.textContent = 'Part is Ordered!';
+                }
+        
+                cancelBtn.addEventListener('click', onCancel);
+        
+                function onCancel(e) {
+                    liPreviewElement.remove();
+                    nextBtn.disabled = false;
+                }
+            }
+     
+        };
+     
+    };
 
 
 
