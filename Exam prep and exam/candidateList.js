@@ -1,82 +1,85 @@
 class JobOffers {
     constructor(employer, position) {
-        this.employer = employer;
-        this.position = position;
-        this.jobCandidates = [];
+        this.employer = employer
+        this.position = position
+        this.jobCandidates = []
     }
-
+ 
     jobApplication(candidates) {
-        const addedCandidates = [];
-
-        candidates.forEach(candidate => {
-            const [name, education, expYears] = candidate.split("-");
-            const existingCandidate = this.jobCandidates.find(cand => cand.name === name);
-
-            if (existingCandidate) {
-                if (parseInt(expYears) > existingCandidate.yearsExperience) {
-                    existingCandidate.yearsExperience = parseInt(expYears);
-                }
+        candidates.forEach((candidate) => {
+            let [name, education, experience] = candidate.split("-")
+            experience = Number(experience)
+ 
+            let isFound = this.jobCandidates.find((person) => person.name === name)
+ 
+            if (!isFound) {
+                this.jobCandidates.push({ name, education, experience })
             } else {
-                this.jobCandidates.push({
-                    name,
-                    education,
-                    yearsExperience: parseInt(expYears)
-                });
-                addedCandidates.push(name);
+                this.jobCandidates.map((person) => {
+                    if (person.name === isFound.name) {
+                        if (person.experience < experience) {
+                            person.experience = experience
+                        }
+                    }
+                    return person
+                })
             }
-        });
-
-        const addedCandidatesString = addedCandidates.join(", ");
-        return `You successfully added candidates: ${addedCandidatesString}.`;
+        })
+        let employees = []
+        this.jobCandidates.forEach((x) => employees.push(x.name))
+        return `You successfully added candidates: ${employees.join(", ")}.`
+ 
     }
-
+ 
     jobOffer(chosenPerson) {
-        const [name, minimalExperience] = chosenPerson.split("-");
-        const selectedCandidate = this.jobCandidates.find(c => c.name === name);
-
-        if (!selectedCandidate) {
-            throw new Error(`${name} is not in the candidates list!`);
+        let [name, minimalExperience] = chosenPerson.split("-")
+        minimalExperience = Number(minimalExperience)
+        let employee = this.jobCandidates.find((person) => person.name === name)
+ 
+        if (!employee) {
+            throw new Error(`${name} is not in the candidates list!`)
         }
-
-        if (parseInt(minimalExperience) > selectedCandidate.yearsExperience) {
-            throw new Error(
-                `${name} does not have enough experience as ${this.position}, minimum requirement is ${minimalExperience} years.`
-            );
+        if (minimalExperience > employee.experience) {
+            throw new Error(`${name} does not have enough experience as ${this.position}, minimum requirement is ${minimalExperience} years."`)
         }
-
-        selectedCandidate.yearsExperience = "hired";
-        return `Welcome aboard, our newest employee is ${name}.`;
+ 
+        this.jobCandidates.map((person) => {
+            if (person.name === name) {
+                person.experience = "hired"
+            }
+            return person
+        })
+        return `Welcome aboard, our newest employee is ${name}.`
     }
-
+ 
     salaryBonus(name) {
-        const selectedCandidate = this.jobCandidates.find(candidate => candidate.name === name);
-
-        if (!selectedCandidate) {
-            throw new Error(`${name} is not in the candidates list!`);
+        let employee = this.jobCandidates.find((person) => person.name === name)
+ 
+        if (!employee) {
+            throw new Error(`${name} is not in the candidates list!`)
         }
-
-        let salary;
-
-        if (selectedCandidate.education === "Bachelor") {
-            salary = "$50,000";
-        } else if (selectedCandidate.education === "Master") {
-            salary = "$60,000";
+ 
+        if (employee.education === "Bachelor") {
+            return `${name} will sign a contract for ${this.employer}, as ${this.position} with a salary of $50,000 per year!`
+        } else if (employee.education === "Master") {
+            return `${name} will sign a contract for ${this.employer}, as ${this.position} with a salary of $60,000 per year!`
         } else {
-            salary = "$40,000";
+            return `${name} will sign a contract for ${this.employer}, as ${this.position} with a salary of $40,000 per year!`
         }
-
-        return `${name} will sign a contract for ${this.employer}, as ${this.position} with a salary of ${salary} per year!`;
+ 
+ 
     }
-
+ 
     candidatesDatabase() {
         if (this.jobCandidates.length === 0) {
-            throw new Error("Candidate Database is empty!");
+            throw new Error(`Candidate Database is empty!`)
         }
-
-        const sortedCandidates = this.jobCandidates.sort((a, b) => a.name.localeCompare(b.name));
-        const candidatesInfo = sortedCandidates.map(candidate => `${candidate.name}-${candidate.yearsExperience}`);
-        const candidatesList = candidatesInfo.join("\n");
-
-        return `Candidates list:\n${candidatesList}`;
+        let output = ""
+        let sortedCandidates = this.jobCandidates.sort((a, b) => a.name.localeCompare(b.name))
+        sortedCandidates.forEach((x) =>{
+            output += `\n${x.name}-${x.experience}`
+        })
+ 
+        return `Candidates list:\n${output.trim()}`
     }
 }
