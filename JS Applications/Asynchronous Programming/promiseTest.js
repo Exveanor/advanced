@@ -5,4 +5,4 @@ let promise = new Promise((resolve, reject) => {
 });
 
 console.log(promise);
-promise.then(x => console.log(x));
+promise.then(x => console.log(x)).catch(e => console.log(e));  //then takes result from resolve. 
