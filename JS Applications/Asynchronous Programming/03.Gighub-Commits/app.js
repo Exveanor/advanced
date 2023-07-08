@@ -1,5 +1,6 @@
 async function loadCommits() {
     let usernameInput = document.getElementById("username");
+    let ul = document.getElementById("commits")
     let repoInput = document.getElementById("repo");
     let username = usernameInput.value;
     let repo = repoInput.value;
@@ -9,5 +10,14 @@ async function loadCommits() {
     let commits = await fetch(url)
         .then(response => response.json());
   
-    console.log(commits);
+    Object.values(commits).forEach(c => {
+        let li = createLi(c.commit.author.name, c.commit.message);
+        ul.appendChild(li);
+    })
+}
+
+function createLi(author, message) {
+    let li = document.createElement("li");
+    li.textContent = `${author}: ${message}`;
+    return li;
 }
