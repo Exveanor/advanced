@@ -9,17 +9,23 @@ async function getInfo() {
     const busesUl = document.getElementById("buses");
     busesUl.innerHTML = "";
     try {
-    const response = await fetch(`http://localhost:3030/jsonstore/bus/businfo/${stopId}`);
-    const data = await response.json();
+       
+        const response = await fetch(`http://localhost:3030/jsonstore/bus/businfo/${stopId}`);
 
-    document.getElementById("stopName").textContent = data.name;
+        if (!response.ok) {
+            const error = new Error(response.statusText);
+            throw error;
+        }
+        const data = await response.json();
 
-    Object.entries(data.buses).forEach(([busId, time]) => {
-        const liElement = document.createElement("li");
-        liElement.textContent = `Bus ${busId} arrives in ${time} minutes`;
-        busesUl.appendChild(liElement);
-    });
-} catch (err) {
-    document.getElementById("stopName").textContent = "Error";
-}
+        document.getElementById("stopName").textContent = data.name;
+
+        Object.entries(data.buses).forEach(([busId, time]) => {
+            const liElement = document.createElement("li");
+            liElement.textContent = `Bus ${busId} arrives in ${time} minutes`;
+            busesUl.appendChild(liElement);
+        });
+    } catch (err) {
+        document.getElementById("stopName").textContent = `Error`;
+    }
 }
