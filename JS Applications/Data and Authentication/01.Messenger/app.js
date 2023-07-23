@@ -1,73 +1,45 @@
 function attachEvents() {
-
-
-    let getSubmitButton = document.getElementById('submit');
-
-    // add event listener to the submit button
-
-    getSubmitButton.addEventListener('click', submitEvent);
-
-    async function submitEvent(event) {
-
-        // Get Author
-
-        let user = document.getElementsByName('author')[0].value;
-        // Get User Message
-
-
-        let userMessage = document.getElementsByName('content')[0].value;
-
-        let messageAsObject = {
-            author: user,
-            content: userMessage,
-        }
-
-        let requestSettings = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(messageAsObject)
-        }
-
-        // Send Post Data
-        await fetch('http://localhost:3030/jsonstore/messenger', requestSettings);
-
-
+    const url = `http://localhost:3030/jsonstore/messenger`;
+   
+    const sendBtn = document.getElementById("submit");
+    sendBtn.addEventListener("click", clickSendBtn);
+   
+    const refreshBtn = document.getElementById("refresh");
+    refreshBtn.addEventListener("click", clickRefreshBtn);
+   
+    let authorName = document.querySelector(
+      '#controls>input[name="author"][type="text"]'
+    );
+    let contentMessage = document.querySelector(
+      '#controls>input[name="content"][type="text"]'
+    );
+   
+   
+   
+    async function clickSendBtn() {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          author: authorName.value,
+          content: contentMessage.value,
+        }),
+      });
+   
+      authorName.value = "";
+      contentMessage.value = "";
+      const data = await res.json();
     }
-
-    // add event listener to the refresh button
-
-
-    let getRefreshButton = document.getElementById('refresh');
-
-    getRefreshButton.addEventListener('click', refreshEvent);
-    async function refreshEvent(event) {
-        let requestSettings = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        };
-
-        let messages = await fetch(
-            'http://localhost:3030/jsonstore/messenger',
-            requestSettings
-        );
-        let messageData = await messages.json();
-        let textarea = document.getElementById('messages');
-
-        textarea.value = '';
-
-        for (let msg in messageData) {
-            let author = messageData[msg].author;
-            let message = messageData[msg].content;
-            let createMessage = `${author}: ${message}\n`;
-            textarea.value += createMessage;
-        }
+    async function clickRefreshBtn() {
+      const textArea = document.getElementById("messages");
+      //  console.log(textArea.value);
+      const response = await fetch(url);
+      const data = await response.json();
+      const comments = [];
+      let obj = Object.values(data).forEach((x) => {
+        comments.push(`${x.author}: ${x.content}`);
+        textArea.value = comments.join("\n");
+      });
     }
-
-
-}
-
-attachEvents();
+  }
+  attachEvents();
