@@ -21,6 +21,9 @@ attachEvents();
     Object.values(data).forEach(x => {
         const liElement = document.createElement("li");
         liElement.textContent = `${x.person}: ${x.phone}`;
+        
+        // create delete button 
+        const deleteButtonElement = 
         phoneBookElement.appendChild(liElement);
     });
 }
