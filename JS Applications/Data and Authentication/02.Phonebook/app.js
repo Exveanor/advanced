@@ -7,6 +7,7 @@ const baseURL = "http://localhost:3030/jsonstore/phonebook"
 
 function attachEvents() {
     document.getElementById("btnLoad").addEventListener("click", loadPhoneBook);
+    document.getElementById("phonebook").addEventListener("click", deletePhone);
 
 }
 
@@ -23,7 +24,22 @@ attachEvents();
         liElement.textContent = `${x.person}: ${x.phone}`;
         
         // create delete button 
-        const deleteButtonElement = 
+        const deleteButtonElement = document.createElement("button");
+        deleteButtonElement.setAttribute("id", x._id);
+        deleteButtonElement.textContent = "Delete";
+
+        liElement.appendChild(deleteButtonElement);
         phoneBookElement.appendChild(liElement);
     });
+}
+
+async function deletePhone(e) {
+    if (e.target.textContent !== "Delete") {
+        return;
+    }
+    const currentPhoneId = e.target.id;
+    await fetch(`${baseURL}/${currentPhoneId}`, {
+        method: "DELETE",
+    });
+    loadPhoneBook();
 }
