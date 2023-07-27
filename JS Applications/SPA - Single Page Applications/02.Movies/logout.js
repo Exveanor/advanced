@@ -19,6 +19,6 @@ export async function logout(e) {
 
     alert('You have logged out.')
     
-    showSection('home-page')
+    showSection('form-sign-up')
     setupHome()
 }
