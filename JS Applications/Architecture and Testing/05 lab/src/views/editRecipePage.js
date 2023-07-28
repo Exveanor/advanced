@@ -1,4 +1,4 @@
-import { showCatalog } from "./catalogPage.js";
+import { showCatalog } from ".catalogPage.js";
 import { createElement } from "../util.js";
 import * as recipeService from "../services/recipeService.js";
 

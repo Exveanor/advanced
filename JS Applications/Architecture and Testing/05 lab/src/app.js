@@ -1,4 +1,4 @@
-import { showCatalog } from "./views/catalogPage.js";
+import { showCatalog } from ".catalogPage.js";
 import { showCreateRecipe } from "./views/createRecipePage.js";
 import { showLogin } from "./views/loginPage.js";
 import { logout } from "./logout.js";
