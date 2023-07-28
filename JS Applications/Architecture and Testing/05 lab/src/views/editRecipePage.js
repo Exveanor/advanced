@@ -45,5 +45,5 @@ async function editRecipe(e, id) {
     let result = await recipeService.editRecipe(recipe, id);
 
     _navigate('catalog');
-    // showCatalog(_domElement);
+    showCatalog(_domElement);
 }

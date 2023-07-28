@@ -32,5 +32,5 @@ async function login(e) {
 
     let result = await userService.login(user);
     _navigate('catalog');
-    // showCatalog(_domElement);
+    showCatalog(_domElement);
 }

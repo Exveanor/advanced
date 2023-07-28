@@ -43,7 +43,7 @@ async function register(e) {
     try {
         let result = await userService.register(user);
         _navigate('catalog');
-        // showCatalog(_domElement);
+        showCatalog(_domElement);
     } catch (e) {
         if (e instanceof UserReadableError) {
             alert(e.message);
