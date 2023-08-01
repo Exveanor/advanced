@@ -20,4 +20,7 @@ async function login(e){
 
     let response = await fetch(url, settings);
     let result = await response.json();
+
+    sessionStorage.setItem("email", result.email);
+    sessionStorage.setItem("accessToken", result.accessToken);
 }
